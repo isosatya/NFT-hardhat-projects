@@ -27,23 +27,13 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
 
     const args = [ethUsdAggregatorAddress, lowSVG, highSVG]
 
-    const dynamicSvgNft = await deploy("DynamicSvgNft", {
+    const dynamicSvgNft: DynamicSvgNft = await deploy("DynamicSvgNft", {
         from: deployer,
         args: args,
         log: true,
         // waitConfirmations: network.config.blockConfirmations || 1,
         waitConfirmations: networkConfig[chainId!]["blockConfirmations"] || 1,
     })
-
-    let dynamicSvgNft2: DynamicSvgNft
-    dynamicSvgNft2 = await ethers.getContract("DynamicSvgNft")
-    const getLowSvg = await dynamicSvgNft2.getLowSvg()
-    const getHighSvg = await dynamicSvgNft2.getLowSvg()
-
-    console.log("getLowSvg", getLowSvg)
-    console.log("getHighSvg", getHighSvg)
-
-    // console.log("dynamicSvgNft ----->", dynamicSvgNft)
 
     if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
         console.log("Verifying....")
